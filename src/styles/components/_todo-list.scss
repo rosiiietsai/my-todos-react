@@ -1,0 +1,12 @@
+.todo-list {
+  margin-bottom: 1.5rem;
+  overflow-y: scroll;
+
+  // hide scrollbar for Firefox
+  scrollbar-width: none;
+
+  // hide scrollbar for Chrome, Safari, Edge
+  &::-webkit-scrollbar {
+    display: none;
+  }
+}

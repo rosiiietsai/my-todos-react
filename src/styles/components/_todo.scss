@@ -1,0 +1,51 @@
+.todo {
+  display: flex;
+  align-items: center;
+  background-color: var(--color-white);
+  border-radius: 5px;
+  padding: 1rem 1rem;
+  margin-bottom: 1rem;
+  height: 5rem;
+
+  &__content {
+    margin-left: 1rem;
+    margin-right: auto;
+  }
+
+  &__content + &__btn {
+    margin-right: 3.5px;
+    margin-top: 2px;
+  }
+
+  &__btn {
+    transition: all 0.5s;
+    opacity: 0;
+    visibility: hidden;
+  }
+
+  &:hover &__btn {
+    opacity: 1;
+    visibility: visible;
+  }
+
+  &__tag {
+    &--priority-high {
+      border-left: 5px solid var(--color-priority-high);
+    }
+
+    &--priority-medium {
+      border-left: 5px solid var(--color-priority-medium);
+    }
+
+    &--priority-low {
+      border-left: 5px solid var(--color-priority-low);
+    }
+
+    &--completed {
+      border-left: 5px solid var(--color-gray-light);
+      font-style: italic;
+      text-decoration: line-through;
+      color: var(--color-gray-light);
+    }
+  }
+}

@@ -1,0 +1,11 @@
+.header {
+  display: flex;
+  align-items: baseline;
+  gap: 1rem;
+
+  &__auth {
+    display: flex;
+    gap: 1rem;
+    margin-left: auto;
+  }
+}

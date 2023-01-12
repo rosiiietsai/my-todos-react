@@ -1,0 +1,52 @@
+.todo-form {
+  padding-top: 6rem;
+  text-align: center;
+
+  @include responsive-phone {
+    padding-top: 5rem;
+  }
+
+  &__field {
+    display: flex;
+    align-items: center;
+    background-color: var(--color-white);
+    padding: 1rem 1rem;
+    margin-bottom: 1rem;
+    height: 5rem;
+
+    &--top {
+      display: flex;
+    }
+  }
+
+  & input[type='text'] {
+    border: none;
+    font: inherit;
+    color: inherit;
+    background-color: var(--color-white);
+
+    &::placeholder {
+      font-size: 1.3rem;
+      font-style: italic;
+      color: var(--color-gray-light);
+    }
+
+    &:focus-visible {
+      outline: none;
+    }
+  }
+
+  &__btn--close {
+    position: absolute;
+    top: 1.6rem;
+    right: 2rem;
+  }
+
+  &__btn--submit {
+    margin-top: 1rem;
+  }
+
+  & .checkbox {
+    margin-left: 1rem;
+  }
+}

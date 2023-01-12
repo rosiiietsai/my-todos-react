@@ -1,0 +1,39 @@
+.home {
+  display: flex;
+  flex-direction: column;
+  height: 75vh;
+
+  @include responsive-phone {
+    height: 80vh;
+  }
+
+  &__msg {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: var(--color-white);
+    border-radius: 10px;
+    margin: 10rem 5rem;
+    align-self: stretch;
+    padding: 2rem;
+    color: var(--color-primary-dark);
+    text-align: center;
+
+    & svg {
+      width: 2rem;
+      height: 2rem;
+      fill: var(--color-primary-dark);
+      margin-left: 1rem;
+    }
+
+    @include responsive-phone {
+      margin: 10rem 2rem;
+    }
+  }
+
+  & .btn--large {
+    margin-top: auto;
+    margin-bottom: 2rem;
+    align-self: center;
+  }
+}

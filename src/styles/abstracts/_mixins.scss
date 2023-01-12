@@ -1,0 +1,6 @@
+@mixin responsive-phone {
+  // 450px / 16px = 28.125
+  @media only screen and (max-width: 28.125em) {
+    @content;
+  }
+} ;

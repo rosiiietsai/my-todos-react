@@ -1,0 +1,17 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    match /todos/{todo_id} {
+      // only authed user
+      allow read, create: if request.auth != null;
+      // logged in user uid must match the document's userId
+      allow update: if request.auth.uid == resource.data.userId;
+    }
+    match /todosOrder/{user_id} {
+      // only authed user
+      allow read, create: if request.auth != null;
+      // logged in user uid must match the document id
+      allow update: if request.auth.uid == user_id;
+    }
+  }
+}

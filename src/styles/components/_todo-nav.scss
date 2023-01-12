@@ -1,0 +1,21 @@
+.todos-nav {
+  display: flex;
+  align-items: center;
+  position: sticky;
+  top: 0px;
+  height: 6rem;
+
+  @include responsive-phone {
+    height: 5rem;
+  }
+
+  &__categories {
+    list-style: none;
+    display: flex;
+    gap: 1.5rem;
+  }
+
+  & .btn__icon {
+    margin-left: auto;
+  }
+}

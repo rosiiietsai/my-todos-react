@@ -1,0 +1,28 @@
+.auth-form {
+  display: flex;
+  flex-direction: column;
+
+  & input {
+    border: none;
+    border-radius: 10px;
+    padding: 0.6rem;
+    font: inherit;
+    color: inherit;
+    background-color: var(--color-white);
+
+    &:focus-visible {
+      outline: none;
+    }
+  }
+
+  &__label {
+    display: block;
+    margin-top: 1rem;
+    margin-left: 0.4rem;
+  }
+
+  &__btn--submit {
+    align-self: center;
+    margin-top: 3rem;
+  }
+}
