@@ -36,6 +36,7 @@ export const useFetchCollection = (collectionName, queryArr) => {
     // cleanup function
     return () => unsubscribe();
     // avoid infinite loop
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [collectionName, user, JSON.stringify(queryArr)]);
 
   return { documents, isPending, error };
