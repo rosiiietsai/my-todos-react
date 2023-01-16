@@ -62,7 +62,6 @@ export const useFirestore = collectionName => {
 
   const addDocument = async (document, id) => {
     dispatch({ type: 'IS_PENDING' });
-    console.log(id);
 
     try {
       const ref = id
@@ -71,7 +70,6 @@ export const useFirestore = collectionName => {
       const addedDocument = id
         ? await setDoc(ref, document)
         : await addDoc(ref, document);
-      console.log(addedDocument);
       dispatch({ type: 'ADDED_DOC', payload: addedDocument });
     } catch (err) {
       console.error(err.message);

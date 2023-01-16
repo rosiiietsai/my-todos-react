@@ -5,13 +5,13 @@ service cloud.firestore {
       // only authed user
       allow read, create: if request.auth != null;
       // logged in user uid must match the document's userId
-      allow update: if request.auth.uid == resource.data.userId;
+      allow update, delete: if request.auth.uid == resource.data.userId;
     }
     match /todosOrder/{user_id} {
       // only authed user
       allow read, create: if request.auth != null;
       // logged in user uid must match the document id
-      allow update: if request.auth.uid == user_id;
+      allow update, delete: if request.auth.uid == user_id;
     }
   }
 }
