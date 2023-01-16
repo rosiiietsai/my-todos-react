@@ -27,7 +27,6 @@
     box-shadow: 0 5px 10px 2px rgba(0, 0, 0, 0.2);
 
     @include responsive-phone {
-      max-width: 30rem;
       padding: 4rem 5rem;
     }
   }

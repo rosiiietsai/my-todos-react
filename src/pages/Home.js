@@ -1,38 +1,52 @@
 import icons from '../assets/sprite.svg';
 
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { useAuthContext } from '../hooks/useAuthContext';
 import { useFetchCollection } from '../hooks/useFetchCollection';
 import { useFetchDocument } from '../hooks/useFetchDocument';
-import { useChangeTodo } from '../hooks/useChangeTodo';
 import TodoNav from '../components/TodoNav';
 import TodoList from '../components/TodoList';
 import Skeleton from '../components/Skeleton';
+import { useFirestore } from '../hooks/useFirestore';
 
 export default function Home() {
   const [sortedTodos, setSortedTodos] = useState(null);
   const [displayedTodos, setDisplayedTodos] = useState(null);
   const [category, setCategory] = useState(null);
   const { user } = useAuthContext();
+  const { updateDocument: updateTodosOrder } = useFirestore('todosOrder');
+  const { deleteDocument: deleteTodo } = useFirestore('todos');
   const { document: todosOrder } = useFetchDocument('todosOrder', user?.uid);
   const { documents: todos, isPending } = useFetchCollection('todos', [
     'userId',
     '==',
     user?.uid,
   ]);
-  const { handleDelete } = useChangeTodo();
 
-  const handleClickNav = category => {
-    const selectedTodos = sortedTodos.filter(todo =>
-      category === 'all' ? todo : category === todo.priority
-    );
-    setDisplayedTodos(selectedTodos);
-    setCategory(category);
-  };
+  const handleDisplayCategory = useCallback(
+    category => {
+      const selectedTodos = sortedTodos.filter(todo =>
+        category === 'all' ? todo : category === todo.priority
+      );
+      setDisplayedTodos(selectedTodos);
+      setCategory(category);
+    },
+    [sortedTodos]
+  );
 
   const handleDeleteAllCompleted = () => {
+    // delete all completed todos in the todosOrder and update it
+    const deleteTodoIds = displayedTodos
+      .filter(todo => todo.isCompleted)
+      .map(todo => todo.id);
+    const updatedOrder = todosOrder.orderBy.filter(
+      id => !deleteTodoIds.includes(id)
+    );
+    updateTodosOrder(user.uid, { orderBy: updatedOrder });
+
+    // delete all completed todos
     displayedTodos.forEach(todo => {
-      if (todo.isCompleted) handleDelete(todo, todosOrder.orderBy);
+      if (todo.isCompleted) deleteTodo(todo.id);
     });
   };
 
@@ -65,7 +79,7 @@ export default function Home() {
     setCategory('all');
   }, [user]);
 
-  // sort todos by todosOrder and display it
+  // sort todos by todosOrder when page loads
   useEffect(() => {
     if (!todos) return;
     const sortedTodos = [...todos].sort(
@@ -73,12 +87,17 @@ export default function Home() {
         todosOrder.orderBy.indexOf(a.id) - todosOrder.orderBy.indexOf(b.id)
     );
     setSortedTodos(sortedTodos);
-    setDisplayedTodos(sortedTodos);
   }, [todos, todosOrder]);
+
+  // display by sorted todos for each category
+  useEffect(() => {
+    if (!sortedTodos) return;
+    handleDisplayCategory(category);
+  }, [handleDisplayCategory, category, sortedTodos]);
 
   return (
     <div className="home">
-      <TodoNav category={category} onClick={handleClickNav} />
+      <TodoNav category={category} onClick={handleDisplayCategory} />
 
       {renderContent()}
 
