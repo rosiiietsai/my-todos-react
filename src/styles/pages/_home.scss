@@ -1,11 +1,7 @@
 .home {
   display: flex;
   flex-direction: column;
-  height: 75vh;
-
-  @include responsive-phone {
-    height: 80vh;
-  }
+  height: 80vh;
 
   &__msg {
     display: flex;
