@@ -1,64 +1,56 @@
-import { useAuthContext } from '../hooks/useAuthContext';
-import { useFetchDocument } from '../hooks/useFetchDocument';
 import Todo from './Todo';
 
-export default function TodoList({ todos }) {
-  const { user } = useAuthContext();
-  const { document: fetchedTodosOrder } = useFetchDocument(
-    'todosOrder',
-    user.uid
-  );
-
+export default function TodoList({ selectedTodos, sortedTodos, orderBy }) {
   return (
     <div className="todo-list">
       <div className="todo__category--priority-high">
-        {todos
+        {selectedTodos
           .filter(todo => !todo.isCompleted && todo.priority === 'high')
           .map(todo => (
             <Todo
               key={todo.id}
               todo={todo}
-              todos={todos}
-              orderBy={fetchedTodosOrder?.orderBy}
+              sortedTodos={sortedTodos}
+              orderBy={orderBy}
             />
           ))}
       </div>
 
       <div className="todo__category--priority-medium">
-        {todos
+        {selectedTodos
           .filter(todo => !todo.isCompleted && todo.priority === 'medium')
           .map(todo => (
             <Todo
               key={todo.id}
               todo={todo}
-              todos={todos}
-              orderBy={fetchedTodosOrder?.orderBy}
+              sortedTodos={sortedTodos}
+              orderBy={orderBy}
             />
           ))}
       </div>
 
       <div className="todo__category--priority-low">
-        {todos
+        {selectedTodos
           .filter(todo => !todo.isCompleted && todo.priority === 'low')
           .map(todo => (
             <Todo
               key={todo.id}
               todo={todo}
-              todos={todos}
-              orderBy={fetchedTodosOrder?.orderBy}
+              sortedTodos={sortedTodos}
+              orderBy={orderBy}
             />
           ))}
       </div>
 
       <div className="todo__category--completed">
-        {todos
+        {selectedTodos
           .filter(todo => todo.isCompleted)
           .map(todo => (
             <Todo
               key={todo.id}
               todo={todo}
-              todos={todos}
-              orderBy={fetchedTodosOrder?.orderBy}
+              sortedTodos={sortedTodos}
+              orderBy={orderBy}
             />
           ))}
       </div>

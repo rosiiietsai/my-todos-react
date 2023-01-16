@@ -1,17 +1,16 @@
 import icons from '../assets/sprite.svg';
-
 import { useCallback, useEffect, useState } from 'react';
 import { useAuthContext } from '../hooks/useAuthContext';
+import { useFirestore } from '../hooks/useFirestore';
 import { useFetchCollection } from '../hooks/useFetchCollection';
 import { useFetchDocument } from '../hooks/useFetchDocument';
 import TodoNav from '../components/TodoNav';
 import TodoList from '../components/TodoList';
 import Skeleton from '../components/Skeleton';
-import { useFirestore } from '../hooks/useFirestore';
 
 export default function Home() {
   const [sortedTodos, setSortedTodos] = useState(null);
-  const [displayedTodos, setDisplayedTodos] = useState(null);
+  const [selectedTodos, setSelectedTodos] = useState(null);
   const [category, setCategory] = useState(null);
   const { user } = useAuthContext();
   const { updateDocument: updateTodosOrder } = useFirestore('todosOrder');
@@ -25,10 +24,11 @@ export default function Home() {
 
   const handleDisplayCategory = useCallback(
     category => {
-      const selectedTodos = sortedTodos.filter(todo =>
+      const todos = sortedTodos.filter(todo =>
         category === 'all' ? todo : category === todo.priority
       );
-      setDisplayedTodos(selectedTodos);
+
+      setSelectedTodos(todos);
       setCategory(category);
     },
     [sortedTodos]
@@ -36,7 +36,7 @@ export default function Home() {
 
   const handleDeleteAllCompleted = () => {
     // delete all completed todos in the todosOrder and update it
-    const deleteTodoIds = displayedTodos
+    const deleteTodoIds = selectedTodos
       .filter(todo => todo.isCompleted)
       .map(todo => todo.id);
     const updatedOrder = todosOrder.orderBy.filter(
@@ -45,7 +45,7 @@ export default function Home() {
     updateTodosOrder(user.uid, { orderBy: updatedOrder });
 
     // delete all completed todos
-    displayedTodos.forEach(todo => {
+    selectedTodos.forEach(todo => {
       if (todo.isCompleted) deleteTodo(todo.id);
     });
   };
@@ -59,7 +59,7 @@ export default function Home() {
       );
     } else if (isPending) {
       return <Skeleton times={5} />;
-    } else if (displayedTodos?.length === 0) {
+    } else if (selectedTodos?.length === 0) {
       return (
         <div className="home__msg">
           <p>All done</p>
@@ -69,7 +69,13 @@ export default function Home() {
         </div>
       );
     } else {
-      return <TodoList todos={displayedTodos || []} />;
+      return (
+        <TodoList
+          selectedTodos={selectedTodos || []}
+          sortedTodos={sortedTodos}
+          orderBy={todosOrder?.orderBy}
+        />
+      );
     }
   };
 
@@ -101,7 +107,7 @@ export default function Home() {
 
       {renderContent()}
 
-      {user && category === 'all' && displayedTodos?.length !== 0 && (
+      {user && category === 'all' && selectedTodos?.length !== 0 && (
         <button
           className="btn btn--large btn--dark"
           onClick={handleDeleteAllCompleted}>

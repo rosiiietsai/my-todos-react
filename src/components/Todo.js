@@ -2,7 +2,7 @@ import icons from '../assets/sprite.svg';
 import { useNavigate } from 'react-router-dom';
 import { useChangeTodo } from '../hooks/useChangeTodo';
 
-export default function Todo({ todo, todos, orderBy }) {
+export default function Todo({ todo, sortedTodos, orderBy }) {
   const navigate = useNavigate();
   const { handleComplete, handleDelete, handleMoveUp, handleMoveDown } =
     useChangeTodo();
@@ -44,14 +44,14 @@ export default function Todo({ todo, todos, orderBy }) {
         <>
           <button
             className="btn btn__icon todo__btn"
-            onClick={() => handleMoveUp(todo, todos, orderBy)}>
+            onClick={() => handleMoveUp(todo, sortedTodos, orderBy)}>
             <svg>
               <use href={`${icons}#icon-arrow-up-thick`}></use>
             </svg>
           </button>
           <button
             className="btn btn__icon todo__btn"
-            onClick={() => handleMoveDown(todo, todos, orderBy)}>
+            onClick={() => handleMoveDown(todo, sortedTodos, orderBy)}>
             <svg>
               <use href={`${icons}#icon-arrow-down-thick`}></use>
             </svg>

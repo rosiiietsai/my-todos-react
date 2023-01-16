@@ -16,35 +16,41 @@ export const useChangeTodo = () => {
       isCompleted: !todo.isCompleted,
     });
 
-  const handleDelete = (todo, order) => {
-    const updatedOrder = order.filter(id => id !== todo.id);
+  const handleDelete = (todo, orderBy) => {
+    const updatedOrder = orderBy.filter(id => id !== todo.id);
     updateTodosOrder(todo.userId, { orderBy: updatedOrder });
     deleteTodo(todo.id);
   };
 
-  const handleMoveUp = (todo, todos, order) => {
-    const todoIndex = order.indexOf(todo.id);
-    const prevTodo = todos
-      .slice(0, todoIndex)
-      .filter(t => t.priority === todo.priority)
-      .at(-1);
+  const handleMoveUp = (todo, sortedTodos, orderBy) => {
+    const todoIndex = orderBy.indexOf(todo.id);
 
+    // find the previous todo id with same category and not yet completed
+    const prevTodo = sortedTodos
+      .slice(0, todoIndex)
+      .filter(t => t.priority === todo.priority && !t.isCompleted)
+      .at(-1);
     if (!prevTodo) return;
-    const prevTodoIndex = order.indexOf(prevTodo.id);
-    const updatedOrder = swapArrElements(order, todoIndex, prevTodoIndex);
+    const prevTodoIndex = orderBy.indexOf(prevTodo.id);
+
+    // swap the order with previous todo
+    const updatedOrder = swapArrElements(orderBy, todoIndex, prevTodoIndex);
     updateTodosOrder(todo.userId, { orderBy: updatedOrder });
   };
 
-  const handleMoveDown = (todo, todos, order) => {
-    const todoIndex = order.indexOf(todo.id);
-    const nextTodo = todos
-      .slice(todoIndex)
-      .filter(t => t.priority === todo.priority)
-      .at(1);
+  const handleMoveDown = (todo, sortedTodos, orderBy) => {
+    const todoIndex = orderBy.indexOf(todo.id);
 
+    // find the next todo id with same category and not yet completed
+    const nextTodo = sortedTodos
+      .slice(todoIndex)
+      .filter(t => t.priority === todo.priority && !t.isCompleted)
+      .at(1);
     if (!nextTodo) return;
-    const nextTodoIndex = order.indexOf(nextTodo.id);
-    const updatedOrder = swapArrElements(order, todoIndex, nextTodoIndex);
+    const nextTodoIndex = orderBy.indexOf(nextTodo.id);
+
+    // swap the order with next todo
+    const updatedOrder = swapArrElements(orderBy, todoIndex, nextTodoIndex);
     updateTodosOrder(todo.userId, { orderBy: updatedOrder });
   };
 
