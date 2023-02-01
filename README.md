@@ -1,6 +1,6 @@
 # My Todos
 
-本專案是使用 [Create React App](https://github.com/facebook/create-react-app) 建置。
+本專案是使用 [Create React App](https://github.com/facebook/create-react-app) 建置，並搭配[Firebase](https://firebase.google.com/) 實現登入登出及儲存資料等相關功能。
 
 ## Features
 

@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { useAuthContext } from '../hooks/useAuthContext';
 import { useLogin } from '../hooks/useLogin';
 
-export default function Form({ onClose }) {
+export default function LoginForm({ onClose }) {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const { login, error, isPending } = useLogin();
