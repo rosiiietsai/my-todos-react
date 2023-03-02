@@ -1,12 +1,10 @@
 .todos-nav {
   display: flex;
   align-items: center;
-  position: sticky;
-  top: 0px;
-  height: 6rem;
+  min-height: 6rem;
 
   @include responsive-phone {
-    height: 5rem;
+    min-height: 5rem;
   }
 
   &__categories {
